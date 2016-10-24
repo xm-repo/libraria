@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="libraria:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/libraria_jar</output-path>
+    <root id="archive" name="libraria.jar">
+      <element id="module-output" name="libraria" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/tika-app-1.13.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
