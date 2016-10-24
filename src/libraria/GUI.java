@@ -77,31 +77,26 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
 
     private void setupEmailLabel(JPanel container) {
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        String gitHubURL = "https://github.com/xm-repo/libraria";
 
-        panel.add(new JLabel("<html><br><font size=2>MIT License.</font></html>"));
-
-        String address = "ubublik@mail.ru";
-        JLabel emailLabel = new JLabel("<html><br><font size=2><a href=#>" + address + "</a></font></html>");
-        emailLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        /*emailLabel.addMouseListener(new MouseAdapter() {
+        JLabel gitHubLabel = new JLabel("<html><br><font size=2><a href=#>" + gitHubURL + "</a></font></html>");
+        gitHubLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        gitHubLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().mail(new URI("mailto:" + address + "?subject=libraria"));
+                    Desktop.getDesktop().browse(new URI(gitHubURL));
                 } catch (URISyntaxException | IOException ex) {
                     // ...
                 }
             }
-        });*/
-        panel.add(emailLabel);
+        });
+
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 4;
-        c.fill = GridBagConstraints.BOTH;
-        container.add(panel, c);
+        container.add(gitHubLabel, c);
     }
 
     void createAndShowGUI() {
