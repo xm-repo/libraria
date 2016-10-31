@@ -9,11 +9,15 @@ public class DocumentAttributes {
 
     public String getAttribute(Attributes attribute) {
         String attr = attributes.get(attribute);
-        return attr != null ? attr : "";
+        return attr != null ? attr.trim() : "";
     }
 
     public void setAttribute(Attributes attribute, String value) {
         attributes.put(attribute, value);
+    }
+
+    public boolean isAttributeEmpty(Attributes attribute) {
+        return getAttribute(attribute).isEmpty();
     }
 
 }

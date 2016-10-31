@@ -5,6 +5,7 @@ public enum Attributes {
     BASIC_FILEPATH("Каталог регистрации"),
 
     BASIC_FILENAME("Имя файла"),
+    CONTENT_TYPE("Тип файла"),
 
     OS_SIZE("Размер (Байт)"),
 

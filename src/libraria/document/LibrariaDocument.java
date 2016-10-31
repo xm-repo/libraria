@@ -4,6 +4,7 @@ import libraria.FileLogger;
 import libraria.document.attributes.Attributes;
 import libraria.document.attributes.DocumentAttributes;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -110,10 +111,18 @@ public class LibrariaDocument {
             ParseContext parseContext = new ParseContext();
             new AutoDetectParser().parse(fis, new DefaultHandler(), metadata, parseContext);
 
-            //log.log(Level.INFO, metadata.get(Metadata.CONTENT_TYPE));
+            documentAttributes.setAttribute(Attributes.EXTRA_CREATOR, metadata.get(TikaCoreProperties.CREATOR));
 
-            documentAttributes.setAttribute(Attributes.EXTRA_CREATOR,
-                    metadata.get(TikaCoreProperties.CREATOR));
+            //Make & Model for images
+            if(documentAttributes.isAttributeEmpty(Attributes.EXTRA_CREATOR)) {
+                String make = metadata.get(TIFF.EQUIPMENT_MAKE); make = make != null ? make : "null";
+                String model = metadata.get(TIFF.EQUIPMENT_MODEL); model = model != null ? model : "null";
+                if(!make.equals("null") || !model.equals("null")) {
+                    documentAttributes.setAttribute(Attributes.EXTRA_CREATOR, String.format("(%s) %s", make, model));
+                }
+            }
+
+            documentAttributes.setAttribute(Attributes.CONTENT_TYPE, metadata.get(Metadata.CONTENT_TYPE));
 
             documentAttributes.setAttribute(Attributes.EXTRA_CREATED,
                     formatDateTime(metadata.getDate(TikaCoreProperties.CREATED)));
@@ -134,6 +143,7 @@ public class LibrariaDocument {
                     formatDateTimeZ(metadata.getDate(TikaCoreProperties.PRINT_DATE)));
 
         } catch (Exception e) {
+            e.printStackTrace();
             mFileLogger.log("ОШИБКА: " + "не удалось прочитать дополнительные атрибуты файла \"" + mPath + "\"");
         }
     }

@@ -92,7 +92,6 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
             }
         });
 
-
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 4;
@@ -102,8 +101,8 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
     void createAndShowGUI() {
 
         //for test
-        //listTextField.setText("/Users/quake/IdeaProjects/libraria/samples/samples.txt");
-        //folderTextField.setText("/Users/quake/Desktop/111");
+        listTextField.setText("/Users/quake/Desktop/sample.txt");
+        folderTextField.setText("/Users/quake/Desktop/111");
 
         //Create and set up the window.
         this.setTitle("libraria");
@@ -199,8 +198,8 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
                         LibrariaDocument document = new LibrariaDocument(line, mTargetDirectory, mFileLogger);
                         document.copyTo();
                         documents.add(document);
-                        setProgress(progress++);
                     }
+                    setProgress(progress++);
                 }
             } catch (IOException e) {
                 mFileLogger.log("ОШИБКА: " + "не удалось прочитать исходый файл \"" + mListFile.toString() + "\"");
