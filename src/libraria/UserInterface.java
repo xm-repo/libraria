@@ -15,9 +15,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-class GUI extends JFrame implements ActionListener, PropertyChangeListener {
+class UserInterface extends JFrame implements ActionListener, PropertyChangeListener {
 
     private final JButton listButton = new JButton("...");
     private final JTextField listTextField = new JTextField(100);
@@ -26,8 +25,38 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
     private final JTextField folderTextField = new JTextField();
 
     private final JButton copyButton = new JButton ("Копировать");
-
     private final JProgressBar progressBar = new JProgressBar();
+
+    private final JCheckBox cpyCheckBox = new JCheckBox("Копировать");
+    private final JCheckBox repCheckBox = new JCheckBox("Отчет");
+    private final JCheckBox utcCheckBox = new JCheckBox("Время UTC");
+
+    void createAndShowGUI() {
+
+        //for test
+        listTextField.setText("/Users/quake/Desktop/samples/samples2.txt");
+        folderTextField.setText("/Users/quake/Desktop/111");
+
+        //Create and set up the window.
+        this.setTitle("libraria");
+        this.setSize(600, 300);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        this.getContentPane().add(panel, BorderLayout.CENTER);
+
+        //Create some controls
+        setupOptions(panel);
+        setupCopyButton(panel);
+        setupGHLabel(panel);
+        setupPathLine(panel, 0, new JLabel("Список файлов"), listTextField, listButton);
+        setupPathLine(panel, 1, new JLabel("Папка"), folderTextField, folderButton);
+
+        //Display the window.
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
 
     private void setupPathLine(JPanel container, int line, JLabel label, JTextField textField, JButton button) {
 
@@ -66,16 +95,18 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
         copyButton.addActionListener(this);
 
         panel.add(progressBar);
+        progressBar.setMinimum(0);
+        progressBar.setMaximum(100);
         progressBar.setStringPainted(true);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 4;
         c.fill = GridBagConstraints.BOTH;
         container.add(panel, c);
     }
 
-    private void setupEmailLabel(JPanel container) {
+    private void setupGHLabel(JPanel container) {
 
         String gitHubURL = "https://github.com/xm-repo/libraria";
 
@@ -87,40 +118,31 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
                 try {
                     Desktop.getDesktop().browse(new URI(gitHubURL));
                 } catch (URISyntaxException | IOException ex) {
-                    // ...
+                    ex.printStackTrace();
                 }
             }
         });
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
-        c.gridy = 4;
+        c.gridy = 5;
         container.add(gitHubLabel, c);
     }
 
-    void createAndShowGUI() {
-
-        //for test
-        listTextField.setText("/Users/quake/Desktop/sample.txt");
-        folderTextField.setText("/Users/quake/Desktop/111");
-
-        //Create and set up the window.
-        this.setTitle("libraria");
-        this.setSize(600, 300);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void setupOptions(JPanel container) {
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-        this.getContentPane().add(panel, BorderLayout.CENTER);
+        panel.setLayout(new FlowLayout());
 
-        //Create some buttons
-        setupCopyButton(panel);
-        setupEmailLabel(panel);
-        setupPathLine(panel, 0, new JLabel("Список файлов"), listTextField, listButton);
-        setupPathLine(panel, 1, new JLabel("Папка"), folderTextField, folderButton);
+        cpyCheckBox.setSelected(true); panel.add(cpyCheckBox);
+        repCheckBox.setSelected(true); panel.add(repCheckBox);
+        utcCheckBox.setSelected(true); panel.add(utcCheckBox);
 
-        //Display the window.
-        this.setVisible(true);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 3;
+        c.fill = GridBagConstraints.BOTH;
+        container.add(panel, c);
     }
 
     @Override
@@ -150,13 +172,21 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
 
         } else if(e.getSource() == copyButton) {
 
+            if(listTextField.getText().trim().isEmpty() || folderTextField.getText().isEmpty()) {
+                return;
+            }
+
+            cpyCheckBox.setEnabled(false);
+            repCheckBox.setEnabled(false);
+            utcCheckBox.setEnabled(false);
             copyButton.setEnabled(false);
             progressBar.setValue(0);
+
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-            Task task = new Task();
-            task.addPropertyChangeListener(this);
-            task.execute();
+            Worker worker = new Worker(listTextField.getText(), folderTextField.getText());
+            worker.addPropertyChangeListener(this);
+            worker.execute();
         }
 
     }
@@ -168,46 +198,55 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
         }
     }
 
-    private class Task extends SwingWorker<Void, Void> {
+    private class Worker extends SwingWorker<Void, Integer> {
 
-        private FileLogger mFileLogger;
-        private Path mListFile;
-        private Path mTargetDirectory;
+        private final FileLogger mFileLogger;
+        private final Path mListFile;
+        private final Path mTargetDirectory;
+        private final HtmlReport mHtmlReport;
+        int mLines = 1;
+
+        Worker(String inFile, String targetDir) {
+            mListFile = Paths.get(inFile);
+            mTargetDirectory = Paths.get(targetDir);
+            mFileLogger = new FileLogger(mTargetDirectory);
+            mHtmlReport = new HtmlReport(mTargetDirectory, utcCheckBox.isSelected());
+            mLines = getLinesCount();
+        }
 
         @Override
         public Void doInBackground() {
 
-            if(listTextField.getText().trim().isEmpty() || folderTextField.getText().isEmpty()) {
-                return null;
-            }
-
-            mListFile = Paths.get(listTextField.getText());
-            mTargetDirectory = Paths.get(folderTextField.getText());
-            mFileLogger =  new FileLogger(mTargetDirectory);
-
-            progressBar.setMinimum(0);
-            progressBar.setMaximum(getLinesCount());
-
-            java.util.List<LibrariaDocument> documents = new ArrayList<>();
-
-            int progress = 0;
+            int line = 1;
             try (BufferedReader br = new BufferedReader(new FileReader(mListFile.toString()))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if(!line.startsWith("--") && !line.trim().isEmpty()) {
-                        LibrariaDocument document = new LibrariaDocument(line, mTargetDirectory, mFileLogger);
-                        document.copyTo();
-                        documents.add(document);
-                    }
-                    setProgress(progress++);
+                if(repCheckBox.isSelected()) {
+                    mHtmlReport.writeHeader();
                 }
+                String docFile;
+                while ((docFile = br.readLine()) != null) {
+                    if(!docFile.startsWith("--") && !docFile.trim().isEmpty()) {
+                        LibrariaDocument document = new LibrariaDocument(docFile, mTargetDirectory, mFileLogger);
+                        if(cpyCheckBox.isSelected()) {
+                            document.copyTo();
+                        }
+                        if(repCheckBox.isSelected()) {
+                            mHtmlReport.writeDocument(document);
+                        }
+                    }
+                    int progress = line++ * 100 / mLines;
+                    setProgress(progress > 100 ? 99 : progress);
+                }
+                if(repCheckBox.isSelected()) {
+                    mHtmlReport.writeFooter();
+                }
+
             } catch (IOException e) {
+                e.printStackTrace();
                 mFileLogger.log("ОШИБКА: " + "не удалось прочитать исходый файл \"" + mListFile.toString() + "\"");
                 return null;
             }
 
-            new HtmlReport(documents).writeHTML(mTargetDirectory);
-            setProgress(progress);
+            setProgress(100);
 
             return null;
         }
@@ -217,8 +256,9 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
                 lnr.skip(Long.MAX_VALUE);
                 return lnr.getLineNumber();
             } catch (Exception e) {
+                e.printStackTrace();
                 mFileLogger.log("ОШИБКА: " + "не удалось прочитать исходый файл \"" + mListFile.toString() + "\"");
-                return 0;
+                return 1;
             }
         }
 
@@ -226,6 +266,10 @@ class GUI extends JFrame implements ActionListener, PropertyChangeListener {
         public void done() {
             Toolkit.getDefaultToolkit().beep();
             setCursor(null); //turn off the wait cursor
+
+            cpyCheckBox.setEnabled(true);
+            repCheckBox.setEnabled(true);
+            utcCheckBox.setEnabled(true);
             copyButton.setEnabled(true);
         }
     }

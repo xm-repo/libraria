@@ -2,77 +2,96 @@ package libraria;
 
 import libraria.document.LibrariaDocument;
 import libraria.document.attributes.Attributes;
+import libraria.document.attributes.DocumentAttributes;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class HtmlReport {
 
-    private List<LibrariaDocument> mDocuments = new ArrayList<>();
+    private final String mHtmlReport;
+    private int line = 1;
+    private final List<Attributes> mAttributes = new ArrayList<>();
 
-    HtmlReport(List<LibrariaDocument> documents) {
-        mDocuments = documents;
+    HtmlReport(Path targetDirectory, boolean utcTime) {
+        mHtmlReport = targetDirectory.resolve("report.html").toString();
+
+        Collections.addAll(mAttributes, Attributes.values());
+
+        if(!utcTime) {
+            mAttributes.remove(Attributes.OS_CREATIONTIME_Z);
+            mAttributes.remove(Attributes.OS_LASTACCESSTTIME_Z);
+            mAttributes.remove(Attributes.OS_LASTMODIFIEDTIME_Z);
+            mAttributes.remove(Attributes.EXTRA_CREATED_Z);
+            mAttributes.remove(Attributes.EXTRA_MODIFIED_Z);
+            mAttributes.remove(Attributes.EXTRA_LASTPRINTED_Z);
+        }
+
     }
 
-    void writeHTML(Path targetDirectory) {
+    void writeHeader() {
 
-        if(targetDirectory == null || mDocuments.isEmpty()) {
-            return;
-        }
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(mHtmlReport, true), StandardCharsets.UTF_16))) {
 
-        String htmlReport = targetDirectory.resolve("report.html").toString();
+            writer.write("<!DOCTYPE html>\n");
+            writer.write("<html>\n");
 
-        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlReport), StandardCharsets.UTF_16))) {
-            doWriteHTML(writer);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            writer.write("<head>\n");
+            writer.write("<style>\n");
+            writer.write("table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }\n");
+            writer.write("table tr:nth-child(even) { background-color: #dddddd; }\n");
+            writer.write("th { background-color: #87cefa; padding: 10px; }\n");
+            writer.write("</style>\n");
+            writer.write("</head>\n");
+
+            writer.write("<body>\n");
+
+            writer.write("<table>\n");
+
+            addTH(writer, "№");
+            for (Attributes attribute : mAttributes) {
+                addTH(writer, attribute.title);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void doWriteHTML(Writer writer) throws IOException {
+    void writeFooter() {
 
-        writer.write("<!DOCTYPE html>\n");
-
-        writer.write("<html>\n");
-
-        writer.write("<head>\n");
-        writer.write("<style>\n");
-        writer.write("table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }\n");
-        writer.write("table tr:nth-child(even) { background-color: #dddddd; }\n");
-        writer.write("th { background-color: #87cefa; padding: 10px; }\n");
-        writer.write("</style>\n");
-        writer.write("</head>\n");
-
-        writer.write("<body>\n");
-
-        writer.write("<table>\n");
-
-        addTH(writer, "№");
-        for(Attributes attribute : Attributes.values()) {
-            addTH(writer, attribute.title);
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(mHtmlReport, true), StandardCharsets.UTF_16))) {
+            writer.write("</table>\n");
+            writer.write("</body>\n");
+            writer.write("</html>\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        int i = 1;
-        for(LibrariaDocument document : mDocuments) {
+    }
+
+    void writeDocument(LibrariaDocument document) {
+
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(mHtmlReport, true), StandardCharsets.UTF_16))) {
 
             writer.write("<tr>\n");
 
-            addTD(writer, String.valueOf(i++));
+            addTD(writer, String.valueOf(line++));
 
-            for(Attributes attribute : Attributes.values()) {
-                addTD(writer, document.getDocumentAttributes().getAttribute(attribute));
+            DocumentAttributes documentAttributes = document.getDocumentAttributes();
+            for (Attributes attribute : mAttributes) {
+                addTD(writer, documentAttributes.getAttribute(attribute));
             }
 
             writer.write("</tr>\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        writer.write("</table>\n");
-
-        writer.write("</body>\n");
-        writer.write("</html>\n");
     }
 
     private void addTD(Writer writer, String value) throws IOException {

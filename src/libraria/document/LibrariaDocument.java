@@ -3,6 +3,7 @@ package libraria.document;
 import libraria.FileLogger;
 import libraria.document.attributes.Attributes;
 import libraria.document.attributes.DocumentAttributes;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.TikaCoreProperties;
@@ -24,34 +25,43 @@ import java.util.TimeZone;
 
 public class LibrariaDocument {
 
-    private final Path mPath;
+    private Path mPath;
     private final Path mTargetDirectory;
     private final FileLogger mFileLogger;
 
-    private final DocumentAttributes documentAttributes = new DocumentAttributes();
+    public LibrariaDocument(String path, Path targetDirectory, FileLogger fileLogger) {
 
-    public LibrariaDocument(String source, Path targetDirectory, FileLogger fileLogger) {
-
-        mPath = Paths.get(source);
+        mPath = Paths.get(path);
         mTargetDirectory = targetDirectory;
         mFileLogger = fileLogger;
-
-        getBasicAttributes();
-        getOSAttributes();
-        getCustomAttributes();
     }
 
     public DocumentAttributes getDocumentAttributes() {
-        return this.documentAttributes;
+
+        DocumentAttributes documentAttributes = new DocumentAttributes();
+
+        fillBasicAttributes(documentAttributes);
+        fillOSAttributes(documentAttributes);
+        fillCustomAttributes(documentAttributes);
+
+        return documentAttributes;
     }
 
     public void copyTo() {
 
-        Path targetPath = mTargetDirectory.resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
+        Path targetPath;
+
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            String drive = mPath.getRoot().toString().replace(":\\", "");
+            targetPath = mTargetDirectory.resolve(drive).resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
+        } else {
+            targetPath = mTargetDirectory.resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
+        }
 
         try {
             Files.createDirectories(targetPath.getParent());
         } catch (IOException e) {
+            e.printStackTrace();
             mFileLogger.log("ОШИБКА: " + "не удалось создать папку \"" + targetPath.getParent() + "\"");
             return;
         }
@@ -59,22 +69,24 @@ public class LibrariaDocument {
         try {
             Files.copy(mPath, targetPath, StandardCopyOption.COPY_ATTRIBUTES);
         } catch (IOException e) {
+            e.printStackTrace();
             mFileLogger.log("ОШИБКА: " + "не удалось скопировать файл \"" + mPath + "\"");
         }
     }
 
-    private void getBasicAttributes() {
-        documentAttributes.setAttribute(Attributes.BASIC_FILEPATH, mPath.toAbsolutePath().normalize().toString());
+    private void fillBasicAttributes(DocumentAttributes documentAttributes) {
+        documentAttributes.setAttribute(Attributes.BASIC_FILEPATH, mPath.getParent().toString());
         documentAttributes.setAttribute(Attributes.BASIC_FILENAME, mPath.getFileName().toString());
     }
 
-    private void getOSAttributes() {
+    private void fillOSAttributes(DocumentAttributes documentAttributes) {
 
         BasicFileAttributes basicFileAttributes;
 
         try {
             basicFileAttributes = Files.readAttributes(mPath, BasicFileAttributes.class);
         } catch (IOException e) {
+            e.printStackTrace();
             mFileLogger.log("ОШИБКА: " + "не удалось прочитать системные атрибуты файла \"" + mPath + "\"");
             return;
         }
@@ -101,7 +113,7 @@ public class LibrariaDocument {
                 formatFileTimeZ(basicFileAttributes.lastModifiedTime()));
     }
 
-    private void getCustomAttributes() {
+    private void fillCustomAttributes(DocumentAttributes documentAttributes) {
 
         try(FileInputStream fis = new FileInputStream(mPath.toString())) {
 
@@ -182,13 +194,6 @@ public class LibrariaDocument {
 
     private String formatFileSize(long size) {
         return String.format("%,d", size);
-
-        /*if(size <= 0) {
-            return null;
-        }
-        String[] units = new String[] { "b", "kb", "mb", "gb", "tb" };
-        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
-        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];*/
     }
 
 }
