@@ -25,30 +25,7 @@
     <favorites_list name="libraria" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="UserInterface.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/libraria/UserInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="53" column="44" selection-start-line="53" selection-start-column="44" selection-end-line="53" selection-end-column="44" />
-              <folding>
-                <element signature="method#setupPathLine#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#setupCopyButton#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#setupGHLabel#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#setupOptions#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#actionPerformed#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#propertyChange#0;class#UserInterface#0" expanded="false" />
-                <element signature="class#Worker#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#Worker#0;class#Worker#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#doInBackground#0;class#Worker#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#getLinesCount#0;class#Worker#0;class#UserInterface#0" expanded="false" />
-                <element signature="method#done#0;class#Worker#0;class#UserInterface#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -124,48 +101,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="libraria" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="libraria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -330,7 +265,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -340,7 +275,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.78267044" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -685,25 +620,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/libraria/document/LibrariaDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
-          <folding>
-            <element signature="method#LibrariaDocument#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#getDocumentAttributes#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#copyTo#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#fillBasicAttributes#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#fillOSAttributes#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#fillCustomAttributes#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#formatDateTimeZ#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#formatDateTime#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#formatFileTimeZ#0;class#LibrariaDocument#0" expanded="false" />
-            <element signature="method#formatFileTime#0;class#LibrariaDocument#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -719,11 +635,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/libraria/document/LibrariaDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="176" column="0" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+          <folding>
+            <element signature="method#LibrariaDocument#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#getDocumentAttributes#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#copyTo#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#fillBasicAttributes#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#fillOSAttributes#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#fillCustomAttributes#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#formatDateTimeZ#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#formatDateTime#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#formatFileTimeZ#0;class#LibrariaDocument#0" expanded="false" />
+            <element signature="method#formatFileTime#0;class#LibrariaDocument#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/libraria/UserInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="53" column="44" selection-start-line="53" selection-start-column="44" selection-end-line="53" selection-end-column="44" />
+        <state relative-caret-position="285">
+          <caret line="33" column="28" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
           <folding>
+            <element signature="method#createAndShowGUI#0;class#UserInterface#0" expanded="false" />
             <element signature="method#setupPathLine#0;class#UserInterface#0" expanded="false" />
             <element signature="method#setupCopyButton#0;class#UserInterface#0" expanded="false" />
             <element signature="method#setupGHLabel#0;class#UserInterface#0" expanded="false" />
