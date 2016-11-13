@@ -34,12 +34,12 @@ class UserInterface extends JFrame implements ActionListener, PropertyChangeList
     void createAndShowGUI() {
 
         //for test
-        listTextField.setText("/Users/quake/Desktop/samples/samples2.txt");
-        folderTextField.setText("/Users/quake/Desktop/111");
+        //listTextField.setText("/Users/quake/Desktop/samples/samples2.txt");
+        //folderTextField.setText("/Users/quake/Desktop/111");
 
         //Create and set up the window.
         this.setTitle("libraria");
-        this.setSize(600, 300);
+        this.setSize(600, 250);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -225,9 +225,9 @@ class UserInterface extends JFrame implements ActionListener, PropertyChangeList
                 String docFile;
                 while ((docFile = br.readLine()) != null) {
                     if(!docFile.startsWith("--") && !docFile.trim().isEmpty()) {
-                        LibrariaDocument document = new LibrariaDocument(docFile, mTargetDirectory, mFileLogger);
+                        LibrariaDocument document = new LibrariaDocument(docFile, mFileLogger);
                         if(cpyCheckBox.isSelected()) {
-                            document.copyTo();
+                            document.copyTo(mTargetDirectory);
                         }
                         if(repCheckBox.isSelected()) {
                             mHtmlReport.writeDocument(document);

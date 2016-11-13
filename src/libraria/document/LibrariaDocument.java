@@ -25,14 +25,11 @@ import java.util.TimeZone;
 
 public class LibrariaDocument {
 
-    private Path mPath;
-    private final Path mTargetDirectory;
+    private final Path mPath;
     private final FileLogger mFileLogger;
 
-    public LibrariaDocument(String path, Path targetDirectory, FileLogger fileLogger) {
-
+    public LibrariaDocument(String path, FileLogger fileLogger) {
         mPath = Paths.get(path);
-        mTargetDirectory = targetDirectory;
         mFileLogger = fileLogger;
     }
 
@@ -47,15 +44,15 @@ public class LibrariaDocument {
         return documentAttributes;
     }
 
-    public void copyTo() {
+    public void copyTo(Path targetDirectory) {
 
         Path targetPath;
 
         if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
             String drive = mPath.getRoot().toString().replace(":\\", "");
-            targetPath = mTargetDirectory.resolve(drive).resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
+            targetPath = targetDirectory.resolve(drive).resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
         } else {
-            targetPath = mTargetDirectory.resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
+            targetPath = targetDirectory.resolve(mPath.subpath(0, mPath.getNameCount())).normalize();
         }
 
         try {
